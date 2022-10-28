@@ -5,26 +5,16 @@ using System;
 /// </summary>
 public class Message {
 
-    private String id;
     private String header;
     private String body;
     private String sender;
 
-    /// <summary>
-    /// Gets and sets the message ID
-    /// @return String - message ID 
-    /// </summary>
-    public String ID {
-        get
-        {
-            return id;
-
-        }
-        set
-        {
-            id = value;
-        }
-
+    public Message(){}
+    public Message(string header, string message)
+    {
+        Header = header;
+        Sender = message.Split(' ')[0];
+        Body = message;
     }
 
     /// <summary>
@@ -78,11 +68,10 @@ public class Message {
     }
 
     /// <summary>
-    /// @return message type: returns Char: S - SMS, E - email, T - twitter
+    /// @return message type: returns Char: S - SMS, E - email, T - twitter, I - incident email
     /// </summary>
-    public Char DetectMessageType() {
-        // TODO implement here
-        return header[0];
+    public virtual Char DetectMessageType() {
+            return header[0];
     }
 
     /// <summary>
@@ -90,7 +79,7 @@ public class Message {
     /// @return ToString of the Message class
     /// </summary>
     public String ToString() {
-        return "Message Type: " + header[0] + ", id: " + id + ", sender: " + sender + ", body: " + body;
+        return "Message Type: " + header[0] + ", sender: " + sender + ", body: " + body;
     }
 
 }

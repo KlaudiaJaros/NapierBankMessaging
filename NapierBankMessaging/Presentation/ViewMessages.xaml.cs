@@ -10,19 +10,26 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace NapierBankMessaging
+namespace NapierBankMessaging.Presentation
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for ViewMessages.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ViewMessages : Window
     {
-        public MainWindow()
+        private MainWindow main;
+        public ViewMessages()
         {
             InitializeComponent();
+        }
+
+        private void BackClick(object sender, RoutedEventArgs e)
+        {
+            main = new MainWindow();
+            main.Show();
+            Close();
         }
     }
 }
