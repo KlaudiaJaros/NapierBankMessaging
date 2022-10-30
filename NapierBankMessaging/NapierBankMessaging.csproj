@@ -67,6 +67,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Data\AbbreviationsData.cs" />
+    <Compile Include="Data\DataFacade.cs" />
+    <Compile Include="Data\TrendsData.cs" />
     <Compile Include="Presentation\InputMessages.xaml.cs">
       <DependentUpon>InputMessages.xaml</DependentUpon>
     </Compile>
@@ -80,7 +83,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\ConvertAbbreviation.cs" />
     <Compile Include="Models\Email.cs" />
     <Compile Include="Models\EmailSIR.cs" />
     <Compile Include="Models\Message.cs" />
@@ -114,8 +116,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Database\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

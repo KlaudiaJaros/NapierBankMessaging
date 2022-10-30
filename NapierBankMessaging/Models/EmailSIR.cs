@@ -5,14 +5,27 @@ using System;
 /// </summary>
 public class EmailSIR : Email
 {
-    private String sortCode;
-    private String incident;
+    private string sortCode;
+    private string incident;
+
+    public EmailSIR(string header, string body) : base(header, body) 
+    {
+        Extract();
+    }
+
+    private void Extract()
+    {
+        string[] separated = Body.Split('\n');
+        sortCode = separated[0].Substring(11).TrimEnd('\n','\r'); // 11 chars for 'Sort code:'
+        incident = separated[1].Substring(20).TrimEnd('\n','\r'); ; // 20 chars for 'Nature of Incident:'
+    }
 
     /// <summary>
     /// Gets and sets the sort code
     /// @return sort code
     /// </summary>
-    public String SortCode {
+    public string SortCode
+    {
         get
         {
             return sortCode;
@@ -28,7 +41,8 @@ public class EmailSIR : Email
     /// Gets and sets the incident type
     /// @return incident type
     /// </summary>
-    public String Incident {
+    public string Incident
+    {
         get
         {
             return incident;

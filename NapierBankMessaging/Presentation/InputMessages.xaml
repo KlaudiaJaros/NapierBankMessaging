@@ -16,7 +16,7 @@
                 <RowDefinition Height="100"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
-                <RowDefinition Height="100"/>
+                <RowDefinition Height="300"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
@@ -30,18 +30,18 @@
             <TextBlock Text="Message: " Grid.Column="0" Grid.Row="3" Padding="5"/>
 
 
-            <TextBox x:Name="headerBox" Grid.Column="0" Grid.Row="2" Width="250" Padding="5"/>
-            <TextBox x:Name="messageBox" Grid.Column="0" Grid.Row="3" Width="250" Padding="5"/>
+            <TextBox x:Name="headerBox" Grid.Column="0" Grid.Row="2" Padding="5" Margin="88,0,32,0"/>
+            <TextBox x:Name="messageBox" Grid.Column="0" Grid.Row="3" Padding="5" TextWrapping="Wrap" AcceptsReturn="True" MaxLength="2000" Margin="88,0,32,0" />
 
 
             <TextBlock Text="Type:" Grid.Column="1" Grid.Row="1" Padding="5"/>
-            <TextBox x:Name="typeBox" Grid.Column="1" Grid.Row="1" Width="250" IsEnabled="False" Padding="5"/>
+            <TextBox x:Name="typeBox" Grid.Column="1" Grid.Row="1" IsEnabled="False" Padding="5" Margin="87,0,32,0"/>
             <TextBlock Text="Header:" Grid.Column="1" Grid.Row="2" Padding="5"/>
-            <TextBox x:Name="previewHeaderBox" Grid.Column="1" Grid.Row="2" Width="250" IsEnabled="False" Padding="5"/>
+            <TextBox x:Name="previewHeaderBox" Grid.Column="1" Grid.Row="2" IsEnabled="False" Padding="5" Margin="87,0,32,0"/>
             <TextBlock Text="Message:" Grid.Column="1" Grid.Row="3" Padding="5"/>
-            <TextBox x:Name="previewMessageBox" Grid.Column="1" Grid.Row="3" Width="250" IsEnabled="False" Padding="5"/>
+            <TextBox x:Name="previewMessageBox" Grid.Column="1" Grid.Row="3" IsEnabled="False" Padding="5" TextWrapping="Wrap" Margin="87,0,32,0"/>
             <TextBlock Text="Sender:" Grid.Column="1" Grid.Row="4" Padding="5"/>
-            <TextBox x:Name="senderBox" Grid.Column="1" Grid.Row="4" Width="250" IsEnabled="False" Padding="5"/>
+            <TextBox x:Name="senderBox" Grid.Column="1" Grid.Row="4" IsEnabled="False" Padding="5" Margin="87,0,32,0"/>
             <TextBlock Text="Message specific fields:" Grid.Column="1" Grid.Row="5" Padding="5"/>
             <TextBlock Text="Tags:" Grid.Column="1" Grid.Row="8" Padding="5"/>
             <TextBox x:Name="tagsBox" Grid.Column="1" Grid.Row="8" Width="250" IsEnabled="False" Padding="5"/>
@@ -49,9 +49,9 @@
             <TextBox x:Name="sortCodeBox" Grid.Column="1" Grid.Row="6" Width="250" IsEnabled="False" Padding="5"/>
             <TextBlock Text="Incident Type:" Grid.Column="1" Grid.Row="7" Padding="5"/>
             <TextBox x:Name="incidentBox" Grid.Column="1" Grid.Row="7" Width="250" IsEnabled="False" Padding="5"/>
-            <Button Content="Submit" HorizontalAlignment="Left"  Grid.Row="7" Grid.Column="0" VerticalAlignment="Top" Width="75" Padding="5" Click="SubmitClick"/>
-            <Button Content="Back" HorizontalAlignment="Left" Grid.Row="7" Grid.Column="0" VerticalAlignment="Top" Width="75" Margin="127,1,0,0" Padding="5" Click="BackClick"/>
-            <Button Content="Input from a file" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="8" Grid.Column="0" Width="127" Padding="5" Click="InputFileClick"/>
+            <Button Content="Submit" HorizontalAlignment="Left"  Grid.Row="5" Grid.Column="0" VerticalAlignment="Top" Width="126" Padding="5" Click="SubmitClick" Margin="280,3,0,0"/>
+            <Button Content="Back" HorizontalAlignment="Left" Grid.Row="8" Grid.Column="0" VerticalAlignment="Top" Width="74" Margin="0,90,0,-85" Padding="5" Click="BackClick"/>
+            <Button Content="Input from a file" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="5" Grid.Column="0" Width="126" Padding="5" Click="InputFileClick" Margin="106,3,0,0"/>
 
         </Grid>
     </StackPanel>

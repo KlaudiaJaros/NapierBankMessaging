@@ -5,11 +5,11 @@ using System;
 /// </summary>
 public class Message {
 
-    private String header;
-    private String body;
-    private String sender;
+    private string header;
+    private string body;
+    private string sender;
 
-    public Message(){}
+    public Message() { }
     public Message(string header, string message)
     {
         Header = header;
@@ -21,7 +21,7 @@ public class Message {
     /// Gets and sets the message header
     /// @return String - message header
     /// </summary>
-    public String Header
+    public string Header
     {
         get
         {
@@ -39,7 +39,8 @@ public class Message {
     /// Gets and sets the message body
     /// @return String - message body
     /// </summary>
-    public virtual String Body {
+    public virtual string Body
+    {
         get
         {
             return body;
@@ -55,7 +56,8 @@ public class Message {
     /// Gets and sets the message sender
     /// @return String - message sender
     /// </summary>
-    public String Sender {
+    public string Sender
+    {
         get
         {
             return sender;
@@ -70,15 +72,34 @@ public class Message {
     /// <summary>
     /// @return message type: returns Char: S - SMS, E - email, T - twitter, I - incident email
     /// </summary>
-    public virtual Char DetectMessageType() {
-            return header[0];
+    public virtual char DetectMessageType()
+    {
+        return char.ToUpper(header[0]);
+    }
+
+    /// <summary>
+    /// @return message type: returns string: S - SMS, E - email, T - twitter, I - incident email
+    /// </summary>
+    public virtual string DetectMessageTypeFullName()
+    {
+        switch (char.ToUpper(header[0]))
+        {
+            case 'S':
+                return "SMS";
+            case 'E':
+                return "Email";
+            case 'T':
+                return "Twit";
+            default:
+                return string.Empty;
+        }
     }
 
     /// <summary>
     /// Returns all information stored by the class in a human friendly string. 
     /// @return ToString of the Message class
     /// </summary>
-    public String ToString() {
+    public override string ToString() {
         return "Message Type: " + header[0] + ", sender: " + sender + ", body: " + body;
     }
 
