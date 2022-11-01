@@ -1,12 +1,17 @@
 using System;
+using System.Runtime.Serialization;
 
 /// <summary>
 /// Message class to hold general information about any message. 
 /// </summary>
-public class Message {
-
+[DataContract]
+public class Message
+{
+    [DataMember]
     private string header;
+    [DataMember]
     private string body;
+    [DataMember]
     private string sender;
 
     public Message() { }
@@ -14,7 +19,7 @@ public class Message {
     {
         Header = header;
         Sender = message.Split(' ')[0];
-        Body = message;
+        Body = message.Substring(Sender.Length+1);
     }
 
     /// <summary>
@@ -78,9 +83,10 @@ public class Message {
     }
 
     /// <summary>
-    /// @return message type: returns string: S - SMS, E - email, T - twitter, I - incident email
+    /// Get the full message type name
+    /// @return message type: returns string: SMS, Email, Tweet
     /// </summary>
-    public virtual string DetectMessageTypeFullName()
+    public string DetectMessageTypeFullName()
     {
         switch (char.ToUpper(header[0]))
         {
@@ -89,7 +95,7 @@ public class Message {
             case 'E':
                 return "Email";
             case 'T':
-                return "Twit";
+                return "Tweet";
             default:
                 return string.Empty;
         }

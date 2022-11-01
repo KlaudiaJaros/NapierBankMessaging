@@ -1,7 +1,8 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Json;
 using System.Text.RegularExpressions;
 using System.Windows;
-using System.Windows.Input;
 using Microsoft.Win32;
 using NapierBankMessaging.Data;
 
@@ -65,6 +66,8 @@ namespace NapierBankMessaging.Presentation
 
         private void SubmitClick(object sender, RoutedEventArgs e)
         {
+            // TODO: optional: make the message specific fields disappear
+            ClearPreview();
             Message newMessage = new Message(headerBox.Text, messageBox.Text);
             if (InputValidation(newMessage))
             {
@@ -80,28 +83,45 @@ namespace NapierBankMessaging.Presentation
                     if (emailMessage.DetectMessageType() == 'I')
                     {
                         EmailSIR sirMessage = new EmailSIR(headerBox.Text, messageBox.Text);
+                        newMessage = sirMessage;
+                        // save the incident to incident list:
+                        DataFacade.SaveIncident(sirMessage);
+                        // display message specific fields:
                         sortCodeBox.Text = sirMessage.SortCode;
                         incidentBox.Text = sirMessage.Incident;
-                        newMessage = sirMessage;
                     }
                 }
                 else if (newMessage.DetectMessageType() == 'T')
                 {
                     Tweet tweetMessage = new Tweet(headerBox.Text, messageBox.Text);
                     newMessage = tweetMessage;
+                    DataFacade.SaveTags(tweetMessage);
+                    // display tags
+
                 }
 
+                // display the submitted message in the Preview fields:
                 typeBox.Text = newMessage.DetectMessageTypeFullName();
                 previewHeaderBox.Text = newMessage.Header;
                 previewMessageBox.Text = newMessage.Body;
                 senderBox.Text = newMessage.Sender;
-                // TODO save the message to json
+
+                // save the submitted message:
+                DataFacade.SaveMessage(newMessage);
+
                 headerBox.Clear();
                 messageBox.Clear();
                 MessageBox.Show("Message submitted successfully.");
             }
         }
-
+        private void ClearPreview()
+        {
+            previewHeaderBox.Clear();
+            previewHeaderBox.Clear();
+            sortCodeBox.Clear();
+            incidentBox.Clear();
+            tagsBox.Clear();
+        }
         private void BackClick(object sender, RoutedEventArgs e)
         {
             main = new MainWindow();
@@ -111,29 +131,10 @@ namespace NapierBankMessaging.Presentation
 
         private void InputFileClick(object sender, RoutedEventArgs e)
         {
-            string fileContent = string.Empty;
-            string filePath = string.Empty;
-            OpenFileDialog openFileDialog = new OpenFileDialog();
+            List<Message> inputFileMessages = DataFacade.InputFileMessages();
 
-            openFileDialog.InitialDirectory = "c:\\";
-            openFileDialog.Filter = "Plain text files (*.csv;*.txt)|*.csv;*.txt";
-            openFileDialog.FilterIndex = 2;
-            openFileDialog.RestoreDirectory = true;
 
-            if ((bool)openFileDialog.ShowDialog())
-            {
-                //Get the path of specified file
-                filePath = openFileDialog.FileName;
-
-                //Read the contents of the file into a stream
-                var fileStream = openFileDialog.OpenFile();
-
-                using (StreamReader reader = new StreamReader(fileStream))
-                {
-                    fileContent = reader.ReadToEnd();
-                }
-            }
-
+           
             MessageBox.Show("Messages from the input file submitted successfully. Please return to Main Menu to view Trends and Lists.");
         }
 

@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -69,6 +70,7 @@
     </Compile>
     <Compile Include="Data\AbbreviationsData.cs" />
     <Compile Include="Data\DataFacade.cs" />
+    <Compile Include="Data\MessageData.cs" />
     <Compile Include="Data\TrendsData.cs" />
     <Compile Include="Presentation\InputMessages.xaml.cs">
       <DependentUpon>InputMessages.xaml</DependentUpon>

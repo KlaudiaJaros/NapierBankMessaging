@@ -1,12 +1,14 @@
 using NapierBankMessaging.Data;
+using System.Runtime.Serialization;
 
 /// <summary>
 /// SMS class to hold information about SMS
 /// </summary>
+[DataContract]
 public class SMS : Message
 {
-    public SMS(string header, string body) : base(header, body) 
+    public SMS(string header, string body) : base(header, body)
     {
-        base.Body = DataFacade.ConvertAbbreviations(body);
+        Body = DataFacade.ConvertAbbreviations(Body);
     }
 }

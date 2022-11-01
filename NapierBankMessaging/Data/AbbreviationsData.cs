@@ -15,7 +15,7 @@ namespace NapierBankMessaging.Data
         private static Dictionary<string, string> abbreviations;
 
         /// <summary>
-        /// Retrieves the only ReadData sigleton instance. Static, because it has to be accessible without initialising the object.
+        /// Retrieves the only AbbreviationsData sigleton instance. Static, because it has to be accessible without initialising the object.
         /// </summary>
         public static AbbreviationsData AbbreviationsDataInstance
         {

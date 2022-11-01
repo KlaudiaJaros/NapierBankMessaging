@@ -1,41 +1,46 @@
 using System;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Text.RegularExpressions;
 
 /// <summary>
 /// Email class to hold specific information about Email
 /// </summary>
+[DataContract]
 public class Email : Message
 {
+    [DataMember]
     private string subject;
+    public Email() { }
 
     /// <summary>
     /// Initialises an Email object and modifies the message body to extract the email subject and removes any URLs.
     /// </summary>
     /// <param name="header">Message header</param>
     /// <param name="body">Message body</param>
-    public Email(string header, string body) : base(header, body) 
+    public Email(string header, string body) : base(header, body)
     {
-        RemoveLinks(body);
-        ExtractSubject(body);
+        RemoveLinks();
+        ExtractSubject();
     }
 
     /// <summary>
     /// Extracts the 20 character email subject from the message body
     /// </summary>
     /// <param name="body">Message body</param>
-    private void ExtractSubject(string body)
+    private void ExtractSubject()
     {
         int indexStart = Sender.Length + 1;
-        subject = body.Substring(indexStart, indexStart + 20);
-        Body= body.Substring(indexStart + 23); // 20 char subject + two white spaces chars
+        subject = Body.Substring(0, 20);
+        Body = Body.Substring(23); // 20 char subject + two white spaces chars
     }
 
     /// <summary>
     /// Gets and sets the email subject
     /// @return email subject
     /// </summary>
-    public string Subject {
+    public string Subject
+    {
         get
         {
             return subject;
@@ -51,11 +56,12 @@ public class Email : Message
     /// Removes URLs from the message body
     /// @param String body
     /// </summary>
-    private void RemoveLinks(string body) {
+    private void RemoveLinks()
+    {
         //string urlExamples = @"http|https";
         //MatchCollection match = Regex.Matches(body, urlExamples, RegexOptions.IgnoreCase);
 
-        string[] words = body.Split(' ');
+        string[] words = Body.Split(' ');
         StringBuilder sb = new StringBuilder();
         string replace = "< URL Quarantined >";
         foreach (string word in words)
@@ -70,7 +76,7 @@ public class Email : Message
                 sb.Append(word + " ");
             }
         }
-        base.Body = sb.ToString();
+        Body = sb.ToString();
     }
 
     /// <summary>
