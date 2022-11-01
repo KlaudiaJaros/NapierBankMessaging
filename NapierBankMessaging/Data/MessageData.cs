@@ -6,14 +6,15 @@ using System.Text;
 
 namespace NapierBankMessaging.Data
 {
+    /// <summary>
+    /// Data class singleton to save and retrieve messages
+    /// </summary>
     public class MessageData
     {
         private const string path = "C:\\Users\\klaud\\OneDrive - Edinburgh Napier University\\Year 3\\Software Engineering\\coursework";
         private const string incidentFilename = "incidentsData.csv";
         private const string messageFilename = "MessageData.json";
-        private const string tagsFilename = "tagsData.csv";
         private static MessageData messageDataSystem; // singleton instance
-        private static Dictionary<string, int> tags;
 
         /// <summary>
         /// Retrieves the only MessageData sigleton instance. Static, because it has to be accessible without initialising the object.
@@ -60,7 +61,6 @@ namespace NapierBankMessaging.Data
             List<Message> inputFileMessages = new List<Message>();
             Message message = new Message();
             string filePath = GetPathFromUser();
-            LoadTags();
 
             // if the file exists, get all lines and separate each line by a comma:
             if (File.Exists(filePath))
@@ -109,79 +109,15 @@ namespace NapierBankMessaging.Data
                     else if (messageType == 'T')
                     {
                         Tweet tweet = new Tweet(separated[0], lines[i].Substring(separated[0].Length + 1));
-                        UpdateTags(tweet);
+                        DataFacade.UpdateTags(tweet);
                         message = tweet;
                     }
                     inputFileMessages.Add(message);
                     SaveMessage(message);
                 }
             }
-            SaveTagsToAFile();
+            DataFacade.SaveTagsToAFile();
             return inputFileMessages;
-        }
-
-        public void LoadTags()
-        {
-            tags = new Dictionary<string, int>();
-            string fullPath = Path.Combine(path, tagsFilename);
-
-            // if the file exists, get all lines and separate each line by a comma:
-            if (File.Exists(fullPath))
-            {
-                string[] lines = File.ReadAllLines(fullPath);
-                for (int i = 0; i < lines.Length; i++)
-                {
-                    string[] separated = lines[i].Split(',');
-                    tags.Add(separated[0], int.Parse(separated[1]));
-                }
-            }
-        }
-
-        /// <summary>
-        /// SaveTags method to be used externally
-        /// </summary>
-        /// <param name="tweet">Tweet which tags should be added to the tags trends</param>
-        public void SaveTags(Tweet tweet)
-        {
-            LoadTags();
-            UpdateTags(tweet);
-            SaveTagsToAFile();
-
-        }
-
-        /// <summary>
-        /// Updates the tags dictionary stored in this class by checking the tweet's tags against existing entries and increments the tag value if the tag already exsits or adds a new entry.
-        /// </summary>
-        /// <param name="tweet">Tweet which tags should be added to the tags dictionary</param>
-        private void UpdateTags(Tweet tweet)
-        {
-            foreach (string tag in tweet.Tags)
-            {
-                if (tags.ContainsKey(tag))
-                {
-                    tags.TryGetValue(tag, out int value);
-                    tags[tag] = value + 1;
-                }
-                else
-                {
-                    tags.Add(tag, 1);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Saves the tags dictionary contained within this class to a file
-        /// </summary>
-        private void SaveTagsToAFile()
-        {
-            string fullPath = Path.Combine(path, tagsFilename);
-            using (StreamWriter file = new StreamWriter(fullPath))
-            {
-                foreach (KeyValuePair<string, int> entry in tags)
-                {
-                    file.WriteLine(entry.Key + "," + entry.Value.ToString());
-                }
-            }
         }
 
         /// <summary>

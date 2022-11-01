@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace NapierBankMessaging.Data
 {
+    /// <summary>
+    /// Data class singleton used to converting abbreviations within messages using the abbreviation file provided
+    /// </summary>
     public class AbbreviationsData
     {
         private const string path = "C:\\Users\\klaud\\OneDrive - Edinburgh Napier University\\Year 3\\Software Engineering\\coursework";
@@ -81,7 +84,7 @@ namespace NapierBankMessaging.Data
             {
                 phrase = string.Empty;
                 abbreviations.TryGetValue(separated[i], out phrase);
-                if (!String.IsNullOrEmpty(phrase))
+                if (!string.IsNullOrEmpty(phrase))
                 {
                     sb.Append("<" + phrase + "> ");
                 }

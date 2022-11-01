@@ -96,6 +96,7 @@ namespace NapierBankMessaging.Presentation
                     Tweet tweetMessage = new Tweet(headerBox.Text, messageBox.Text);
                     newMessage = tweetMessage;
                     DataFacade.SaveTags(tweetMessage);
+                    DataFacade.SaveMentions(tweetMessage);
                     // display tags
 
                 }

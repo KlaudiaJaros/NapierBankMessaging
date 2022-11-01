@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace NapierBankMessaging.Data
 {
+    /// <summary>
+    /// Data Facade to use within the system. Holds instances of all data classes used to access and save data within the application.
+    /// </summary>
     public static class DataFacade
     {
         // singleton instances:
         private static readonly AbbreviationsData abbreviationsData = AbbreviationsData.AbbreviationsDataInstance;
         private static readonly MessageData messageData = MessageData.MessageDataInstance;
+        private static readonly TrendsData trendsData = TrendsData.TrendsDataInstance;
 
         public static string ConvertAbbreviations(string message)
         {
@@ -29,11 +29,27 @@ namespace NapierBankMessaging.Data
 
         public static void SaveTags(Tweet tweet)
         {
-            messageData.SaveTags(tweet);
+            trendsData.SaveTags(tweet);
         }
         public static List<Message> InputFileMessages()
         {
             return messageData.InputFileMessages();
+        }
+        public static void UpdateTags(Tweet tweet)
+        {
+            trendsData.UpdateTags(tweet);
+        }
+        public static void SaveTagsToAFile()
+        {
+            trendsData.SaveTagsToAFile();
+        }
+        public static List<string> GetMentions()
+        {
+            return trendsData.GetMentions();
+        }
+        public static void SaveMentions(Tweet tweet)
+        {
+            trendsData.SaveMentions(tweet);
         }
     }
 }
