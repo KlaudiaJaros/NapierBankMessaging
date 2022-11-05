@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace NapierBankMessaging.Data
 {
@@ -11,7 +12,10 @@ namespace NapierBankMessaging.Data
         private static readonly AbbreviationsData abbreviationsData = AbbreviationsData.AbbreviationsDataInstance;
         private static readonly MessageData messageData = MessageData.MessageDataInstance;
         private static readonly TrendsData trendsData = TrendsData.TrendsDataInstance;
-
+        public static string GetPath()
+        {
+            return AppDomain.CurrentDomain.BaseDirectory;
+        }
         public static string ConvertAbbreviations(string message)
         {
             return abbreviationsData.ConvertAbbreviations(message);
@@ -47,9 +51,21 @@ namespace NapierBankMessaging.Data
         {
             return trendsData.GetMentions();
         }
+        public static Dictionary<string, int> GetTrends()
+        {
+            return trendsData.GetTrends();
+        }
         public static void SaveMentions(Tweet tweet)
         {
             trendsData.SaveMentions(tweet);
+        }
+        public static Dictionary<string, string> GetIncidents()
+        {
+            return messageData.GetIncidents();
+        }
+        public static void SaveURL(string url)
+        {
+            messageData.SaveURL(url);
         }
     }
 }

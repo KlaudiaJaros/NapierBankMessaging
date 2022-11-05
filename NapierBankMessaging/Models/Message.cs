@@ -1,4 +1,3 @@
-using System;
 using System.Runtime.Serialization;
 
 /// <summary>
@@ -19,7 +18,7 @@ public class Message
     {
         Header = header;
         Sender = message.Split(' ')[0];
-        Body = message.Substring(Sender.Length+1);
+        Body = message.Substring(Sender.Length + 1);
     }
 
     /// <summary>
@@ -28,16 +27,8 @@ public class Message
     /// </summary>
     public string Header
     {
-        get
-        {
-            return header;
-
-        }
-        set
-        {
-            header = value;
-        }
-
+        get => header;
+        set => header = value;
     }
 
     /// <summary>
@@ -46,15 +37,8 @@ public class Message
     /// </summary>
     public virtual string Body
     {
-        get
-        {
-            return body;
-
-        }
-        set
-        {
-            body = value;
-        }
+        get => body;
+        set => body = value;
     }
 
     /// <summary>
@@ -63,15 +47,8 @@ public class Message
     /// </summary>
     public string Sender
     {
-        get
-        {
-            return sender;
-
-        }
-        set
-        {
-            sender = value;
-        }
+        get => sender;
+        set => sender = value;
     }
 
     /// <summary>

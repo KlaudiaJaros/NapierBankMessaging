@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NapierBankMessaging.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,8 @@ namespace NapierBankMessaging.Presentation
         public ViewMessages()
         {
             InitializeComponent();
+            tagsListBox.ItemsSource = DataFacade.GetTrends();
+            incidentListBox.ItemsSource = DataFacade.GetIncidents();
         }
 
         private void BackClick(object sender, RoutedEventArgs e)

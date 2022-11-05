@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:NapierBankMessaging.Presentation"
         mc:Ignorable="d"
         Title="Napier Bank"
-        Height="450" Width="800" Left="200" Top="200">
+        Height="450" Width="800" Left="200" Top="200" Icon="napierbank.png">
     <Grid>
         
         <TextBlock Text="Welcome to Napier Bank Messaging System" HorizontalAlignment="Center" FontSize="25" Padding="20" TextWrapping="Wrap" VerticalAlignment="Top"/>

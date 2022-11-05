@@ -1,7 +1,6 @@
-using System;
+using NapierBankMessaging.Data;
 using System.Runtime.Serialization;
 using System.Text;
-using System.Text.RegularExpressions;
 
 /// <summary>
 /// Email class to hold specific information about Email
@@ -20,8 +19,8 @@ public class Email : Message
     /// <param name="body">Message body</param>
     public Email(string header, string body) : base(header, body)
     {
-        RemoveLinks();
         ExtractSubject();
+        RemoveLinks();
     }
 
     /// <summary>
@@ -30,9 +29,8 @@ public class Email : Message
     /// <param name="body">Message body</param>
     private void ExtractSubject()
     {
-        int indexStart = Sender.Length + 1;
         subject = Body.Substring(0, 20);
-        Body = Body.Substring(23); // 20 char subject + two white spaces chars
+        Body = Body.Substring(22);
     }
 
     /// <summary>
@@ -41,26 +39,16 @@ public class Email : Message
     /// </summary>
     public string Subject
     {
-        get
-        {
-            return subject;
-
-        }
-        set
-        {
-            subject = value;
-        }
+        get => subject;
+        set => subject = value;
     }
 
     /// <summary>
     /// Removes URLs from the message body
     /// @param String body
     /// </summary>
-    private void RemoveLinks()
+    public void RemoveLinks()
     {
-        //string urlExamples = @"http|https";
-        //MatchCollection match = Regex.Matches(body, urlExamples, RegexOptions.IgnoreCase);
-
         string[] words = Body.Split(' ');
         StringBuilder sb = new StringBuilder();
         string replace = "< URL Quarantined >";
@@ -69,13 +57,14 @@ public class Email : Message
             if(word.StartsWith("http") || word.StartsWith("https"))
             {
                 sb.Append(replace + " ");
-                // TODO add the link to a list somewhere
+                DataFacade.SaveURL(word);
             }
             else
             {
                 sb.Append(word + " ");
             }
         }
+        sb.Remove(sb.Length - 1, 1); // remove the last space character
         Body = sb.ToString();
     }
 

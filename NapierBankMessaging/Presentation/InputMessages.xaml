@@ -5,15 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NapierBankMessaging.Presentation"
         mc:Ignorable="d" FontSize ="15"
-        Title="Napier Bank - Input Messages" Height="800" Width="1000" Left="200" Top="200" >
+        Title="Napier Bank - Input Messages" Height="771.5" Width="994" Left="200" Top="200" Icon="napierbank.png">
     <StackPanel>
-        <Grid Margin="20" Height="750" Width="950">
+        <Grid Margin="21,20,26,20" Height="714">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="100"/>
+                <RowDefinition Height="80"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="300"/>
@@ -24,7 +24,7 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <TextBlock Text="Input Form" Grid.Column="0" Grid.Row="0" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
-            <TextBlock Text="Enter your message here or choose a file below:" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="5"/>
+            <TextBlock Text="Enter your message here or choose an input file below:" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="5"/>
             <TextBlock Text="Message Preview" Grid.Column="1" FontSize="25" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5"/>
             <TextBlock Text="Header:" Grid.Column="0" Grid.Row="2" Padding="5" />
             <TextBlock Text="Message: " Grid.Column="0" Grid.Row="3" Padding="5"/>
@@ -42,16 +42,18 @@
             <TextBox x:Name="previewMessageBox" Grid.Column="1" Grid.Row="3" IsEnabled="False" Padding="5" TextWrapping="Wrap" Margin="87,0,32,0"/>
             <TextBlock Text="Sender:" Grid.Column="1" Grid.Row="4" Padding="5"/>
             <TextBox x:Name="senderBox" Grid.Column="1" Grid.Row="4" IsEnabled="False" Padding="5" Margin="87,0,32,0"/>
-            <TextBlock Text="Message specific fields:" Grid.Column="1" Grid.Row="5" Padding="5"/>
-            <TextBlock Text="Tags:" Grid.Column="1" Grid.Row="8" Padding="5"/>
-            <TextBox x:Name="tagsBox" Grid.Column="1" Grid.Row="8" Width="250" IsEnabled="False" Padding="5"/>
-            <TextBlock Text="Sort code:" Grid.Column="1" Grid.Row="6" Padding="5"/>
-            <TextBox x:Name="sortCodeBox" Grid.Column="1" Grid.Row="6" Width="250" IsEnabled="False" Padding="5"/>
-            <TextBlock Text="Incident Type:" Grid.Column="1" Grid.Row="7" Padding="5"/>
-            <TextBox x:Name="incidentBox" Grid.Column="1" Grid.Row="7" Width="250" IsEnabled="False" Padding="5"/>
-            <Button Content="Submit" HorizontalAlignment="Left"  Grid.Row="5" Grid.Column="0" VerticalAlignment="Top" Width="126" Padding="5" Click="SubmitClick" Margin="280,3,0,0"/>
-            <Button Content="Back" HorizontalAlignment="Left" Grid.Row="8" Grid.Column="0" VerticalAlignment="Top" Width="74" Margin="0,90,0,-85" Padding="5" Click="BackClick"/>
-            <Button Content="Input from a file" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="5" Grid.Column="0" Width="126" Padding="5" Click="InputFileClick" Margin="106,3,0,0"/>
+            <TextBlock x:Name="specificFieldsLabel" Text="Message specific fields:" Grid.Column="1" Grid.Row="5" Padding="5" Visibility="Hidden"/>
+            <TextBlock x:Name="tagsLabel" Text="Tags:" Grid.Column="1" Grid.Row="6" Padding="5" Visibility="Hidden"/>
+            <TextBox x:Name="tagsBox" Grid.Column="1" Grid.Row="6" Width="250" IsEnabled="False" Visibility="Hidden" Padding="5"/>
+            <TextBox x:Name="subjectBox" Grid.Column="1" Grid.Row="6" Width="250" IsEnabled="False" Visibility="Hidden" Padding="5"/>
+            <TextBlock x:Name="subjectLabel" Text="Subject:" Grid.Column="1" Grid.Row="6" Padding="5" Visibility="Hidden"/>
+            <TextBlock x:Name="sortCodeLabel" Text="Sort code:" Grid.Column="1" Grid.Row="7" Padding="5" Visibility="Hidden"/>
+            <TextBox x:Name="sortCodeBox" Grid.Column="1" Grid.Row="7" Width="250" IsEnabled="False" Visibility="Hidden" Padding="5"/>
+            <TextBlock x:Name="incidentLabel" Text="Incident Type:" Grid.Column="1" Grid.Row="8" Padding="5" Visibility="Hidden"/>
+            <TextBox x:Name="incidentBox" Grid.Column="1" Grid.Row="8" Width="250" IsEnabled="False" Padding="5" Visibility="Hidden"/>
+            <Button Content="Submit" HorizontalAlignment="Left"  Grid.Row="5" Grid.Column="0" VerticalAlignment="Top" Width="126" Padding="5" Click="SubmitClick" Margin="312,3,0,0"/>
+            <Button Content="Back" HorizontalAlignment="Left" Grid.Row="5" Grid.Column="0" VerticalAlignment="Top" Width="74" Margin="22,3,0,0" Padding="5" Click="BackClick"/>
+            <Button Content="Input from a file" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="5" Grid.Column="0" Width="126" Padding="5" Click="InputFileClick" Margin="140,3,0,0"/>
 
         </Grid>
     </StackPanel>

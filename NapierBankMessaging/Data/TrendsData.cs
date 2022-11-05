@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -9,7 +10,7 @@ namespace NapierBankMessaging.Data
     /// </summary>
     public class TrendsData
     {
-        private const string path = "C:\\Users\\klaud\\OneDrive - Edinburgh Napier University\\Year 3\\Software Engineering\\coursework";
+        private static string path = DataFacade.GetPath();
         private static Dictionary<string, int> tags;
         private const string tagsFilename = "tagsData.csv"; 
         private const string mentionsFilename = "mentionsData.csv";
@@ -37,8 +38,7 @@ namespace NapierBankMessaging.Data
         /// <returns></returns>
         public Dictionary<string, int> GetTrends()
         {
-            Dictionary<string, int> sortedDict = (Dictionary<string, int>)(from entry in tags orderby entry.Value descending select entry);
-            return sortedDict;
+            return (from entry in tags orderby entry.Value descending select entry).ToDictionary(x => x.Key, x => x.Value);
         }
 
         /// <summary>
@@ -130,10 +130,13 @@ namespace NapierBankMessaging.Data
         {
             List<string> mentions = new List<string>();
             string fullPath = Path.Combine(path, mentionsFilename);
-            string[] lines = File.ReadAllLines(fullPath);
-            foreach(string line in lines)
+            if (File.Exists(fullPath))
             {
-                mentions.Add(line);
+                string[] lines = File.ReadAllLines(fullPath);
+                foreach (string line in lines)
+                {
+                    mentions.Add(line);
+                }
             }
             return mentions;
         }

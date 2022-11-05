@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization.Json;
 using System.Text.RegularExpressions;
 using System.Windows;
-using Microsoft.Win32;
+using System.Windows.Forms;
 using NapierBankMessaging.Data;
 
 namespace NapierBankMessaging.Presentation
@@ -14,6 +12,7 @@ namespace NapierBankMessaging.Presentation
     public partial class InputMessages : Window
     {
         private MainWindow main;
+        private PreviewMessages previewMessages;
         public InputMessages()
         {
             InitializeComponent();
@@ -24,41 +23,43 @@ namespace NapierBankMessaging.Presentation
         /// </summary>
         /// <param name="message">Message created from the user input.</param>
         /// <returns>Bool: true if the input is correct, false if not. </returns>
-        private bool InputValidation(Message message)
+        private bool InputValidation()
         {
-            if (string.IsNullOrEmpty(headerBox.Text) || headerBox.Text.Length>10 || !Regex.IsMatch(headerBox.Text.Substring(1), @"^[0-9]*$"))
+            string title = "Input Error";
+            if (string.IsNullOrEmpty(headerBox.Text) || headerBox.Text.Length!=10 || !Regex.IsMatch(headerBox.Text.Substring(1), @"^[0-9]*$"))
             {
-                MessageBox.Show("Please enter a valid message header! (Example: E1234567701)");
+                System.Windows.MessageBox.Show("Please enter a valid message header! (Example: E1234567701)", title);
                 return false;
             }
             if (!(char.ToUpper(headerBox.Text[0]) == 'S' || char.ToUpper(headerBox.Text[0]) == 'T' || char.ToUpper(headerBox.Text[0]) == 'E'))
             {
-                MessageBox.Show("Please enter a valid message header with a valid message type! (Example: E1234567701)");
+                System.Windows.MessageBox.Show("Please enter a valid message header with a valid message type! (Example: E1234567701)", title);
                 return false;
             }
             if (string.IsNullOrEmpty(messageBox.Text))
             {
-                MessageBox.Show("Please enter the message content!");
+                System.Windows.MessageBox.Show("Please enter the message content!", title);
                 return false;
             }
-            if (message.DetectMessageType()=='S' && message.Body.Length > 140)
+            Message message = new Message(headerBox.Text, messageBox.Text);
+            if (message.DetectMessageType() == 'S' && message.Body.Length > 140)
             {
-                MessageBox.Show("Message exceeds the maximum number of characters (140) for message type: " + message.DetectMessageTypeFullName() + "\n\nPlease edit your message.");
+                System.Windows.MessageBox.Show("Message exceeds the maximum number of characters (140) for message type: " + message.DetectMessageTypeFullName() + "\n\nPlease edit your message.", title);
                 return false;
             }
             if (message.DetectMessageType() == 'E' && message.Body.Length > 1028)
             {
-                MessageBox.Show("Message exceeds the maximum number of characters (1028) for message type: " + message.DetectMessageTypeFullName() + "\n\nPlease edit your message.");
+                System.Windows.MessageBox.Show("Message exceeds the maximum number of characters (1028) for message type: " + message.DetectMessageTypeFullName() + "\n\nPlease edit your message.", title);
                 return false;
             }
             if (message.DetectMessageType() == 'T' && message.Body.Length > 140)
             {
-                MessageBox.Show("Message exceeds the maximum number of characters (140) for message type: " + message.DetectMessageTypeFullName() + "\n\nPlease edit your message.");
+                System.Windows.MessageBox.Show("Message exceeds the maximum number of characters (140) for message type: " + message.DetectMessageTypeFullName() + "\n\nPlease edit your message.", title);
                 return false;
             }
             if (message.DetectMessageType() == 'T' && message.Sender.Length > 16)
             {
-                MessageBox.Show("Sender exceeds the maximum number of characters (16) for message type: " + message.DetectMessageTypeFullName() + "\n\nPlease edit your message.");
+                System.Windows.MessageBox.Show("Sender exceeds the maximum number of characters (16) for message type: " + message.DetectMessageTypeFullName() + "\n\nPlease edit your message.", title);
                 return false;
             }
             return true;
@@ -66,11 +67,10 @@ namespace NapierBankMessaging.Presentation
 
         private void SubmitClick(object sender, RoutedEventArgs e)
         {
-            // TODO: optional: make the message specific fields disappear
             ClearPreview();
-            Message newMessage = new Message(headerBox.Text, messageBox.Text);
-            if (InputValidation(newMessage))
+            if (InputValidation())
             {
+                Message newMessage = new Message(headerBox.Text, messageBox.Text);
                 if (newMessage.DetectMessageType() == 'S')
                 {
                     SMS smsMessage = new SMS(headerBox.Text, messageBox.Text);
@@ -80,6 +80,10 @@ namespace NapierBankMessaging.Presentation
                 {
                     Email emailMessage = new Email(headerBox.Text, messageBox.Text);
                     newMessage = emailMessage;
+                    specificFieldsLabel.Visibility = Visibility.Visible;
+                    subjectLabel.Visibility = Visibility.Visible;
+                    subjectBox.Visibility = Visibility.Visible;
+                    subjectBox.Text = emailMessage.Subject;
                     if (emailMessage.DetectMessageType() == 'I')
                     {
                         EmailSIR sirMessage = new EmailSIR(headerBox.Text, messageBox.Text);
@@ -89,6 +93,10 @@ namespace NapierBankMessaging.Presentation
                         // display message specific fields:
                         sortCodeBox.Text = sirMessage.SortCode;
                         incidentBox.Text = sirMessage.Incident;
+                        sortCodeBox.Visibility = Visibility.Visible;
+                        sortCodeLabel.Visibility = Visibility.Visible;
+                        incidentBox.Visibility = Visibility.Visible;
+                        incidentLabel.Visibility = Visibility.Visible;
                     }
                 }
                 else if (newMessage.DetectMessageType() == 'T')
@@ -97,8 +105,10 @@ namespace NapierBankMessaging.Presentation
                     newMessage = tweetMessage;
                     DataFacade.SaveTags(tweetMessage);
                     DataFacade.SaveMentions(tweetMessage);
-                    // display tags
-
+                    tagsBox.Text = tweetMessage.TagsToString();
+                    specificFieldsLabel.Visibility = Visibility.Visible;
+                    tagsLabel.Visibility = Visibility.Visible;
+                    tagsBox.Visibility = Visibility.Visible;
                 }
 
                 // display the submitted message in the Preview fields:
@@ -112,7 +122,7 @@ namespace NapierBankMessaging.Presentation
 
                 headerBox.Clear();
                 messageBox.Clear();
-                MessageBox.Show("Message submitted successfully.");
+                System.Windows.MessageBox.Show("Message submitted successfully.");
             }
         }
         private void ClearPreview()
@@ -122,6 +132,15 @@ namespace NapierBankMessaging.Presentation
             sortCodeBox.Clear();
             incidentBox.Clear();
             tagsBox.Clear();
+            specificFieldsLabel.Visibility = Visibility.Hidden;
+            subjectLabel.Visibility = Visibility.Hidden;
+            subjectBox.Visibility = Visibility.Hidden;
+            sortCodeBox.Visibility = Visibility.Hidden;
+            sortCodeLabel.Visibility = Visibility.Hidden;
+            incidentBox.Visibility = Visibility.Hidden;
+            incidentLabel.Visibility = Visibility.Hidden;
+            tagsLabel.Visibility = Visibility.Hidden;
+            tagsBox.Visibility = Visibility.Hidden;
         }
         private void BackClick(object sender, RoutedEventArgs e)
         {
@@ -134,9 +153,23 @@ namespace NapierBankMessaging.Presentation
         {
             List<Message> inputFileMessages = DataFacade.InputFileMessages();
 
+            string message = "Messages from the input file submitted successfully.\n\nWould you like to view submitted messages?\n\nYes - view input file messages\nNo - return to Main Menu";
+            string title = "Input Messages from a file process";
+            MessageBoxButtons buttons = MessageBoxButtons.YesNoCancel;
+            DialogResult result = System.Windows.Forms.MessageBox.Show(message, title, buttons);
 
-           
-            MessageBox.Show("Messages from the input file submitted successfully. Please return to Main Menu to view Trends and Lists.");
+            if (result == System.Windows.Forms.DialogResult.Yes)
+            {
+                previewMessages = new PreviewMessages(inputFileMessages);
+                previewMessages.Show();
+                Close();
+            }
+            else if (result == System.Windows.Forms.DialogResult.No)
+            {
+                main = new MainWindow();
+                main.Show();
+                Close();
+            }
         }
 
     }

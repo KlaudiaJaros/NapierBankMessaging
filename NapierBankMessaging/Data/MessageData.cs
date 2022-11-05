@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Json;
@@ -11,9 +12,10 @@ namespace NapierBankMessaging.Data
     /// </summary>
     public class MessageData
     {
-        private const string path = "C:\\Users\\klaud\\OneDrive - Edinburgh Napier University\\Year 3\\Software Engineering\\coursework";
+        private static string path = DataFacade.GetPath();
         private const string incidentFilename = "incidentsData.csv";
-        private const string messageFilename = "MessageData.json";
+        private const string messageFilename = "MessageData.json"; 
+        private const string quarantineFilename = "quarantine.txt";
         private static MessageData messageDataSystem; // singleton instance
 
         /// <summary>
@@ -73,18 +75,18 @@ namespace NapierBankMessaging.Data
                     char messageType = separated[0].TrimStart('\"')[0];
                     if (messageType == 'E')
                     {
-                        int index = separated[0].Length + separated[1].Length + separated[2].Length + 3;
+                        int bodyStartIndex = separated[0].Length + separated[1].Length + separated[2].Length + 3; // skip id, sender and subject + 3 commas
                         if (separated[2].StartsWith("SIR"))
                         {
-                            index = index + separated[3].Length + separated[4].Length;
+                            bodyStartIndex = bodyStartIndex + separated[3].Length + separated[4].Length +2; // skip sortcode and incident + 2 commas
                             EmailSIR email = new EmailSIR
                             {
-                                Header = separated[0],
+                                Header = separated[0].TrimStart('\"'),
                                 Sender = separated[1],
                                 Subject = separated[2],
-                                SortCode = separated[3],
-                                Incident = separated[4],
-                                Body = lines[i].Substring(index),
+                                SortCode = separated[3].Substring(11).TrimEnd('\n', '\r'), // 11 chars for 'Sort code: '
+                                Incident = separated[4].Substring(20).TrimEnd('\n', '\r'), // 20 chars for 'Nature of Incident: '
+                                Body = lines[i].Substring(bodyStartIndex).TrimEnd('\"'), // extract the email body
                             };
                             SaveIncident(email);
                             message = email;
@@ -93,22 +95,23 @@ namespace NapierBankMessaging.Data
                         {
                             Email email = new Email
                             {
-                                Header = separated[0],
+                                Header = separated[0].TrimStart('\"'),
                                 Sender = separated[1],
                                 Subject = separated[2],
-                                Body = lines[i].Substring(index),
+                                Body = lines[i].Substring(bodyStartIndex).TrimEnd('\"'),
                             };
+                            email.RemoveLinks();
                             message = email;
                         }
                     }
                     else if (messageType == 'S')
                     {
-                        SMS sms = new SMS(separated[0], lines[i].Substring(separated[0].Length) + 1);
+                        SMS sms = new SMS(separated[0].TrimStart('\"'), lines[i].Substring(separated[0].Length + 1).TrimEnd('\"'));
                         message = sms;
                     }
                     else if (messageType == 'T')
                     {
-                        Tweet tweet = new Tweet(separated[0], lines[i].Substring(separated[0].Length + 1));
+                        Tweet tweet = new Tweet(separated[0].TrimStart('\"'), lines[i].Substring(separated[0].Length + 1).TrimEnd('\"'));
                         DataFacade.UpdateTags(tweet);
                         message = tweet;
                     }
@@ -137,16 +140,17 @@ namespace NapierBankMessaging.Data
         /// Retrieves the list of all saved incidents
         /// </summary>
         /// <returns>List of incidents</returns>
-        public List<string> GetIncidents()
+        public Dictionary<string, string> GetIncidents()
         {
-            List<string> incidents = new List<string>();
+            Dictionary<string, string> incidents = new Dictionary<string, string>();
             string fullPath = Path.Combine(path, incidentFilename);
             if (File.Exists(fullPath))
             {
                 string[] lines = File.ReadAllLines(fullPath);
                 foreach (string line in lines)
                 {
-                    incidents.Add(line);
+                    string[] separated = line.Split(',');
+                    incidents.Add(separated[0], separated[1]);
                 }
             }
             return incidents;
@@ -196,6 +200,19 @@ namespace NapierBankMessaging.Data
             byte[] json = memStream.ToArray();
             memStream.Close();
             return Encoding.UTF8.GetString(json, 0, json.Length);
+        }
+
+        /// <summary>
+        /// Saves the URL from emails to an quarantine list
+        /// </summary>
+        /// <param name="email">URL to be saved</param>
+        public void SaveURL(string url)
+        {
+            string fullPath = Path.Combine(path, quarantineFilename);
+            using (StreamWriter file = new StreamWriter(fullPath, true))
+            {
+                file.WriteLine(url);
+            }
         }
     }
 }

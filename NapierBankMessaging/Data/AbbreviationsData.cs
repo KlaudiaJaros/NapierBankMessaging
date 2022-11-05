@@ -12,8 +12,8 @@ namespace NapierBankMessaging.Data
     /// </summary>
     public class AbbreviationsData
     {
-        private const string path = "C:\\Users\\klaud\\OneDrive - Edinburgh Napier University\\Year 3\\Software Engineering\\coursework";
-        private const string textWordsFilename = "textwords.csv"; 
+        private static string path = DataFacade.GetPath();
+        private const string textWordsFilename = "textwords.csv";
         private static AbbreviationsData readDataSystem; // singleton instance
         private static Dictionary<string, string> abbreviations;
 
