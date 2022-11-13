@@ -151,8 +151,7 @@ namespace NapierBankMessaging.Presentation
 
         private void InputFileClick(object sender, RoutedEventArgs e)
         {
-            List<Message> inputFileMessages = DataFacade.InputFileMessages();
-
+            DataFacade.InputFileMessages();
             string message = "Messages from the input file submitted successfully.\n\nWould you like to view submitted messages?\n\nYes - view input file messages\nNo - return to Main Menu";
             string title = "Input Messages from a file process";
             MessageBoxButtons buttons = MessageBoxButtons.YesNoCancel;
@@ -160,6 +159,7 @@ namespace NapierBankMessaging.Presentation
 
             if (result == System.Windows.Forms.DialogResult.Yes)
             {
+                List<Message> inputFileMessages = DataFacade.ReadMessages();
                 previewMessages = new PreviewMessages(inputFileMessages);
                 previewMessages.Show();
                 Close();

@@ -35,9 +35,13 @@ namespace NapierBankMessaging.Data
         {
             trendsData.SaveTags(tweet);
         }
-        public static List<Message> InputFileMessages()
+        public static void InputFileMessages()
         {
-            return messageData.InputFileMessages();
+            messageData.InputFileMessages();
+        }
+        public static List <Message> ReadMessages()
+        {
+            return messageData.ReadMessages();
         }
         public static void UpdateTags(Tweet tweet)
         {

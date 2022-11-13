@@ -10,19 +10,22 @@ using System.Text;
 public class Tweet : Message
 {
     [DataMember]
-    private List<string> tags;
+    public List<string> Tags { get; set; }
     [DataMember]
-    private List<string> mentions;
+    public List<string> Mentions { get; set; }
 
     public Tweet(string header, string body) : base(header, body)
     {
         Body = DataFacade.ConvertAbbreviations(Body);
-        tags = new List<string>();
-        mentions = new List<string>();
+        Tags = new List<string>();
+        Mentions = new List<string>();
         TagsMentions();
     }
-    public List<string> Tags => tags;
-    public List<string> Mentions => mentions;
+    public Tweet()
+    {
+        Tags = new List<string>();
+        Mentions = new List<string>();
+    }
 
     /// <summary>
     /// Checks the message body for tags and mentions and adds them to appropriate lists.
@@ -34,11 +37,11 @@ public class Tweet : Message
         {
             if (word.StartsWith("#"))
             {
-                tags.Add(word.TrimEnd('\n','\r'));
+                Tags.Add(word.TrimEnd('\n','\r'));
             }
             else if (word.StartsWith("@"))
             {
-                mentions.Add(word.TrimEnd('\n', '\r'));
+                Mentions.Add(word.TrimEnd('\n', '\r'));
             }
         }
     }
@@ -50,7 +53,7 @@ public class Tweet : Message
     public string TagsToString()
     {
         StringBuilder sb = new StringBuilder();
-        foreach(string tag in tags)
+        foreach(string tag in Tags)
         {
             sb.Append(tag + " ");
         }

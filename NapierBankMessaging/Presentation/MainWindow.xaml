@@ -8,10 +8,19 @@
         Title="Napier Bank"
         Height="450" Width="800" Left="200" Top="200" Icon="napierbank.png">
     <Grid>
-        
-        <TextBlock Text="Welcome to Napier Bank Messaging System" HorizontalAlignment="Center" FontSize="25" Padding="20" TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <Button Content="Input Messages" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" Width="300" Click="InputMessagesClick" Margin="221,144,221,238"/>
-        <Button Content="View Trends and Incidents" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" Width="300" Click="ViewMessagesClick" Margin="221,214,221,168"/>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+
+
+        <TextBlock Text="Welcome to Napier Bank Messaging System" Grid.Row="0" HorizontalAlignment="Center" FontSize="25" Padding="20" TextWrapping="Wrap" VerticalAlignment="Center"/>
+        <Button Content="Input Messages" Grid.Row="1" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" Height="30" Width="300" Click="InputMessagesClick" />
+        <Button Content="View Trends and Incidents" Grid.Row="2" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" Width="300" Height="30" Click="ViewTrendsClick" />
+        <Button Content="View Messages" Grid.Row="3" HorizontalAlignment="Center" FontSize="18" VerticalAlignment="Center" Width="300" Height="30" Click="ViewMessagesClick"/>
+
     </Grid>
 </Window>

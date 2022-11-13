@@ -1,5 +1,4 @@
 ﻿using Microsoft.Win32;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Json;
@@ -55,12 +54,10 @@ namespace NapierBankMessaging.Data
             return string.Empty;
         }
         /// <summary>
-        /// Reads all messages from the user input file, turns them into a Message object and returns a list of type Message with all messages from the file.
+        /// Reads all messages from the user input file, processes them and saves them
         /// </summary>
-        /// <returns>List of Message objects created from the input file</returns>
-        public List<Message> InputFileMessages()
+        public void InputFileMessages()
         {
-            List<Message> inputFileMessages = new List<Message>();
             Message message = new Message();
             string filePath = GetPathFromUser();
 
@@ -115,12 +112,69 @@ namespace NapierBankMessaging.Data
                         DataFacade.UpdateTags(tweet);
                         message = tweet;
                     }
-                    inputFileMessages.Add(message);
                     SaveMessage(message);
                 }
             }
             DataFacade.SaveTagsToAFile();
-            return inputFileMessages;
+        }
+
+        /// <summary>
+        /// Reads the saved messages json file, deserialises json objects and returns a list of all the messages using their correct object types
+        /// </summary>
+        /// <returns>A list of all the stored messages</returns>
+        public List<Message> ReadMessages()
+        {
+            List<Message> messages = new List<Message>();
+            string fullPath = Path.Combine(path, messageFilename);
+
+            if (File.Exists(fullPath))
+            {
+                string[] lines = File.ReadAllLines(fullPath);
+                Message deserializedMessage = new Message();
+                Message saveMessage = new Message();
+                var ms = new MemoryStream();
+                var ser = new DataContractJsonSerializer(typeof(Message));
+
+                // for each json line in the saved messages file:
+                foreach (string line in lines)
+                {
+                    // deserialised as a general message type:
+                    ms = new MemoryStream(Encoding.UTF8.GetBytes(line));
+                    ser = new DataContractJsonSerializer(typeof(Message));
+                    deserializedMessage = ser.ReadObject(ms) as Message;
+
+                    // find out the specific type and deserialise each type:
+                    ms = new MemoryStream(Encoding.UTF8.GetBytes(line));
+                    if (deserializedMessage.Header.StartsWith("E"))
+                    {
+                        ser = new DataContractJsonSerializer(typeof(Email));
+                        Email email = ser.ReadObject(ms) as Email;
+                        if (email.Subject.StartsWith("SIR "))
+                        {
+                            ms = new MemoryStream(Encoding.UTF8.GetBytes(line));
+                            ser = new DataContractJsonSerializer(typeof(EmailSIR));
+                            EmailSIR sir = ser.ReadObject(ms) as EmailSIR;
+                            email = sir;
+                        }
+                        saveMessage = email;
+                    }
+                    else if (deserializedMessage.Header.StartsWith("T"))
+                    {
+                        ser = new DataContractJsonSerializer(typeof(Tweet));
+                        Tweet tweet = (Tweet)ser.ReadObject(ms);
+                        saveMessage = tweet;
+                    }
+                    else if(deserializedMessage.Header.StartsWith("S"))
+                    {
+                        ser = new DataContractJsonSerializer(typeof(SMS));
+                        SMS sms = ser.ReadObject(ms) as SMS;
+                        saveMessage = sms;
+                    }
+                    messages.Add(saveMessage);
+                }
+                ms.Close();
+            }
+            return messages;
         }
 
         /// <summary>

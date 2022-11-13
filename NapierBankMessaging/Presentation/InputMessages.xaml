@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NapierBankMessaging.Presentation"
-        mc:Ignorable="d" FontSize ="15"
+        mc:Ignorable="d" FontSize ="12"
         Title="Napier Bank - Input Messages" Height="771.5" Width="994" Left="200" Top="200" Icon="napierbank.png">
     <StackPanel>
         <Grid Margin="21,20,26,20" Height="714">
