@@ -1,6 +1,12 @@
 language: csharp
+mono: none
+install:
+  - dotnet restore
 
 script:
-  - dotnet restore
   - donet build
   - dotnet test NapierBankMessagingTest/NapierBankMessagingTest.csproj
+
+run: curl -Os https://uploader.codecov.io/latest/linux/codecov
+     chmod +x codecov
+     ./codecov -t ${CODECOV_TOKEN=3d407573-e4dc-4373-9d27-b85139c0296b}
