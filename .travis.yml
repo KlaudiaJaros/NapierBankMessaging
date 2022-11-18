@@ -1,0 +1,6 @@
+language: csharp
+
+script:
+  - dotnet restore
+  - donet buil
+  - dotnet test NapierBankMessagingTest/NapierBankMessagingTest.csproj

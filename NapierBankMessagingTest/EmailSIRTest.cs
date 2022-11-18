@@ -9,7 +9,7 @@ namespace NapierBankMessagingTest
         public void ConstructorTestEmail()
         {
             string header = "E012345678";
-            string messageBody = "derek@yahoo.co.uk SIR 01/10/22         sort code: 88-99-00\nnature of incident: Bomb Threat\n Hello this is to inform you there was an incident involving Bomb Threat, kind regards, Derek";
+            string messageBody = "derek@yahoo.co.uk SIR 01/10/22          sort code: 88-99-00\nnature of incident: Bomb Threat\n Hello this is to inform you there was an incident involving Bomb Threat, kind regards, Derek";
             EmailSIR testMessage = new EmailSIR(header, messageBody);
 
             string actualSortCode = testMessage.SortCode;
@@ -26,7 +26,7 @@ namespace NapierBankMessagingTest
         public void IncidentInfoTest()
         {
             string header = "E012345678";
-            string messageBody = "derek@yahoo.co.uk SIR 01/10/22         sort code: 88-99-00\nnature of incident: Bomb Threat\n Hello this is to inform you there was an incident involving Bomb Threat, kind regards, Derek";
+            string messageBody = "derek@yahoo.co.uk SIR 01/10/22          sort code: 88-99-00\nnature of incident: Bomb Threat\n Hello this is to inform you there was an incident involving Bomb Threat, kind regards, Derek";
             EmailSIR testMessage = new EmailSIR(header, messageBody);
 
             string actualIncidentInfo = testMessage.IncidentInfo();
