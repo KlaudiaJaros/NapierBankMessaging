@@ -1,11 +1,12 @@
 language: csharp
 mono: none
+dotnet: 4.7.2
 solution: NapierBankMessaging.sln
 install:
   - dotnet restore
 
 script:
-  - donet build
+  - dotnet build
   - dotnet test NapierBankMessagingTest/NapierBankMessagingTest.csproj
 
 after_success:
