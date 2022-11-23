@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:NapierBankMessaging.Presentation"
         mc:Ignorable="d"
         Title="Napier Bank"
-        Height="450" Width="800" Left="100" Top="100" Icon="napierbank.png">
+        Height="450" Width="800" WindowStartupLocation="CenterScreen" Icon="napierbank.png">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
