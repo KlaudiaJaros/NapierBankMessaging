@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NapierBankMessaging.Presentation"
         mc:Ignorable="d" FontSize ="12"
-        Title="Napier Bank - View Trends and Incidents" Height="651.458" Width="779.31" Left="200" Top="200" Icon="napierbank.png">
+        Title="Napier Bank - View Trends and Incidents" Height="651.458" Width="779.31" Left="100" Top="100" Icon="napierbank.png">
     <Grid Margin="20,20,24,25">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>

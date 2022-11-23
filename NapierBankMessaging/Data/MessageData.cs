@@ -69,11 +69,11 @@ namespace NapierBankMessaging.Data
                 {
                     message = new Message();
                     string[] separated = lines[i].Split(',');
-                    char messageType = separated[0].TrimStart('\"')[0];
+                    char messageType = char.ToUpper(separated[0].TrimStart('\"')[0]);
                     if (messageType == 'E')
                     {
                         int bodyStartIndex = separated[0].Length + separated[1].Length + separated[2].Length + 3; // skip id, sender and subject + 3 commas
-                        if (separated[2].StartsWith("SIR"))
+                        if (separated[2].ToUpper().StartsWith("SIR"))
                         {
                             bodyStartIndex = bodyStartIndex + separated[3].Length + separated[4].Length +2; // skip sortcode and incident + 2 commas
                             EmailSIR email = new EmailSIR
@@ -145,11 +145,11 @@ namespace NapierBankMessaging.Data
 
                     // find out the specific type and deserialise each type:
                     ms = new MemoryStream(Encoding.UTF8.GetBytes(line));
-                    if (deserializedMessage.Header.StartsWith("E"))
+                    if (deserializedMessage.Header.ToUpper().StartsWith("E"))
                     {
                         ser = new DataContractJsonSerializer(typeof(Email));
                         Email email = ser.ReadObject(ms) as Email;
-                        if (email.Subject.StartsWith("SIR "))
+                        if (email.Subject.ToUpper().StartsWith("SIR "))
                         {
                             ms = new MemoryStream(Encoding.UTF8.GetBytes(line));
                             ser = new DataContractJsonSerializer(typeof(EmailSIR));
@@ -158,13 +158,13 @@ namespace NapierBankMessaging.Data
                         }
                         saveMessage = email;
                     }
-                    else if (deserializedMessage.Header.StartsWith("T"))
+                    else if (deserializedMessage.Header.ToUpper().StartsWith("T"))
                     {
                         ser = new DataContractJsonSerializer(typeof(Tweet));
                         Tweet tweet = (Tweet)ser.ReadObject(ms);
                         saveMessage = tweet;
                     }
-                    else if(deserializedMessage.Header.StartsWith("S"))
+                    else if(deserializedMessage.Header.ToUpper().StartsWith("S"))
                     {
                         ser = new DataContractJsonSerializer(typeof(SMS));
                         SMS sms = ser.ReadObject(ms) as SMS;
