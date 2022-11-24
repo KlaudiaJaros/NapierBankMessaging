@@ -11,7 +11,7 @@ namespace NapierBankMessaging.Data
     {
         private static string path = DataFacade.GetPath();
         private static Dictionary<string, int> tags;
-        private const string tagsFilename = "tagsData.csv"; 
+        private const string tagsFilename = "tagsData.csv";
         private const string mentionsFilename = "mentionsData.csv";
         private static TrendsData trendsDataSystem; // singleton instance
 

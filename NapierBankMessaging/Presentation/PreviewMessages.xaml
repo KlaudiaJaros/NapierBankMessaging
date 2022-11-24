@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NapierBankMessaging.Presentation"
         mc:Ignorable="d" FontSize ="12"
-        Title="Napier Bank - Preview Messages from an input file" Height="660.246" Width="933.945" WindowStartupLocation="CenterScreen" Icon="napierbank.png">
+        Title="Napier Bank - Preview Messages " Height="660.246" Width="933.945" WindowStartupLocation="CenterScreen" Icon="napierbank.png">
     <Grid Margin="21,20,25,8">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>

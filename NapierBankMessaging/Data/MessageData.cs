@@ -13,7 +13,7 @@ namespace NapierBankMessaging.Data
     {
         private static string path = DataFacade.GetPath();
         private const string incidentFilename = "incidentsData.csv";
-        private const string messageFilename = "MessageData.json"; 
+        private const string messageFilename = "MessageData.json";
         private const string quarantineFilename = "quarantine.txt";
         private static MessageData messageDataSystem; // singleton instance
 

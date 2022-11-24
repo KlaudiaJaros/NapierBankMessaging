@@ -71,5 +71,13 @@ namespace NapierBankMessaging.Data
         {
             messageData.SaveURL(url);
         }
+        public static Dictionary<string, string> GetAbbreviationDictionary()
+        {
+            return abbreviationsData.GetAbbreviationDictionary();
+        }
+        public static string GetFullPhrase(string abbreviation)
+        {
+            return abbreviationsData.GetFullPhrase(abbreviation);
+        }
     }
 }

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace NapierBankMessaging.Data
 {
@@ -60,7 +57,10 @@ namespace NapierBankMessaging.Data
         /// <returns>A full phrase for the provided abbreviation</returns>
         public string GetFullPhrase(string abbreviation)
         {
-            return abbreviations[abbreviation];
+            if (abbreviations.ContainsKey(abbreviation))
+                return abbreviations[abbreviation];
+            else
+                return null;
         }
 
         /// <summary>
