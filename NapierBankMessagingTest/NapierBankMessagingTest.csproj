@@ -49,12 +49,12 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EmailSIRTest.cs" />
-    <Compile Include="EmailTest.cs" />
-    <Compile Include="MessageTest.cs" />
+    <Compile Include="UnitTests\EmailSIRTest.cs" />
+    <Compile Include="UnitTests\EmailTest.cs" />
+    <Compile Include="UnitTests\MessageTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SMSTest.cs" />
-    <Compile Include="TweetTest.cs" />
+    <Compile Include="UnitTests\SMSTest.cs" />
+    <Compile Include="UnitTests\TweetTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

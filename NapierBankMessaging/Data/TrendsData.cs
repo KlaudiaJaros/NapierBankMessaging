@@ -116,7 +116,7 @@ namespace NapierBankMessaging.Data
             {
                 foreach(string mention in tweet.Mentions)
                 {
-                    file.WriteLine();
+                    file.WriteLine(mention);
                 }
             }
         }

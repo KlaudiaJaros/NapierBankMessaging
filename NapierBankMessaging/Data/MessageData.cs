@@ -110,6 +110,7 @@ namespace NapierBankMessaging.Data
                     {
                         Tweet tweet = new Tweet(separated[0].TrimStart('\"'), lines[i].Substring(separated[0].Length + 1).TrimEnd('\"'));
                         DataFacade.UpdateTags(tweet);
+                        DataFacade.SaveMentions(tweet);
                         message = tweet;
                     }
                     SaveMessage(message);

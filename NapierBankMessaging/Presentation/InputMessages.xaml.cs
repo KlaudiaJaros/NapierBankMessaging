@@ -42,9 +42,19 @@ namespace NapierBankMessaging.Presentation
                 return false;
             }
             Message message = new Message(headerBox.Text, messageBox.Text);
+            if (message.DetectMessageType() == 'S' && (message.Sender.Length<9 || !Regex.IsMatch(message.Sender.Substring(1), @"^[0-9]*$")))
+            {
+                System.Windows.MessageBox.Show("Invalid sender for message type: " + message.DetectMessageTypeFullName() + "\n\nPlease provide a valid phone number.", title);
+                return false;
+            }
             if (message.DetectMessageType() == 'S' && message.Body.Length > 140)
             {
                 System.Windows.MessageBox.Show("Message exceeds the maximum number of characters (140) for message type: " + message.DetectMessageTypeFullName() + "\n\nPlease edit your message.", title);
+                return false;
+            }
+            if (message.DetectMessageType() == 'E' && (!message.Sender.Contains("@") || message.Sender.Length<3))
+            {
+                System.Windows.MessageBox.Show("Invalid sender for message type: " + message.DetectMessageTypeFullName() + "\n\nPlease provide a valid email address.", title);
                 return false;
             }
             if (message.DetectMessageType() == 'E' && message.Body.Length > 1028)
@@ -52,14 +62,19 @@ namespace NapierBankMessaging.Presentation
                 System.Windows.MessageBox.Show("Message exceeds the maximum number of characters (1028) for message type: " + message.DetectMessageTypeFullName() + "\n\nPlease edit your message.", title);
                 return false;
             }
+            if (message.DetectMessageType() == 'T' && message.Sender.Length > 16)
+            {
+                System.Windows.MessageBox.Show("Sender exceeds the maximum number of characters (15) for message type: " + message.DetectMessageTypeFullName() + "\n\nPlease edit your message.", title);
+                return false;
+            }
+            if (message.DetectMessageType() == 'T' && (!message.Sender.StartsWith("@") || message.Sender.Length < 2))
+            {
+                System.Windows.MessageBox.Show("Invalid sender for message type: " + message.DetectMessageTypeFullName() + "\n\nPlease provide a valid handle, example: @sender.", title);
+                return false;
+            }
             if (message.DetectMessageType() == 'T' && message.Body.Length > 140)
             {
                 System.Windows.MessageBox.Show("Message exceeds the maximum number of characters (140) for message type: " + message.DetectMessageTypeFullName() + "\n\nPlease edit your message.", title);
-                return false;
-            }
-            if (message.DetectMessageType() == 'T' && message.Sender.Length > 16)
-            {
-                System.Windows.MessageBox.Show("Sender exceeds the maximum number of characters (16) for message type: " + message.DetectMessageTypeFullName() + "\n\nPlease edit your message.", title);
                 return false;
             }
             return true;
